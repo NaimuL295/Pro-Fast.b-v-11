@@ -8,7 +8,6 @@ import useAxiosInstance from '../../../Hook/useAxiosInstance/useAxiosInstance';
 import { useNavigate } from 'react-router';
 
 
-
 const MyParcels = () => {
     const navigate=useNavigate()
     const { user } = useAuth();
@@ -18,6 +17,7 @@ const MyParcels = () => {
         queryFn: async () => {
             const res = await axiosSecure.get(`/my-parcels?email=${user?.email}`);
             return res.data;
+      
         }
     })
 

@@ -12,10 +12,11 @@ const Navbar = () => {
         <li> <NavLink to="/coverage">Coverage</NavLink></li>
         <li> <NavLink to="/sendParcel">Send A Parcel</NavLink></li>
       {user &&<>
-              <li> <NavLink to="/dashboard">DashboardLayout</NavLink></li>
+              <li> <NavLink to="/dashboard">Dashboard</NavLink></li>
 
       </>
        }
+        <li> <NavLink to="/beRider">BeARider</NavLink></li>
         <li> <NavLink to="/about">About us</NavLink></li>
     
     
@@ -42,7 +43,7 @@ logout().then((result) => {
        {navItems}
       </ul>
     </div>
-    <Link className="btn btn-ghost text-xl"><ProFast/></Link>
+    <span className="btn btn-ghost text-xl"><ProFast/></span>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">

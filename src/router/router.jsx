@@ -14,6 +14,7 @@ import MyParcel from "../Page/Dashboard/MyParcel/MyParcel";
 import Payment from "../Page/Dashboard/Payment/Payment";
 import PaymentHistory from "../Page/Dashboard/PaymentHistory/PaymentHistory";
 import TrackParcel from "../Page/Dashboard/TrackParcel/TrackParcel";
+import BeRider from "../Page/Authenticate/BeRider/BeRider";
 
 
 
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
 {path:"coverage",
   loader:()=>fetch("../../public/serviceCenter.json"),
   Component:Coverage},
+ {path:"beRider",
+  loader:()=>fetch("../../public/serviceCenter.json"),
+  element:<BeRider></BeRider>
+ },
   {path:"sendParcel",
     Component:SendParcel,
     loader:()=>fetch("../../public/serviceCenter.json"),
