@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../Hook/useAuth';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogin from './SocialLogin';
 import axios from 'axios';
 import useAxios from '../../Hook/useAxios';
@@ -10,7 +10,9 @@ const Register = () => {
   const {createUser,updateUserProfile}=useAuth()
   const [profile,setProfile, ]=useState('')
   const Axios=useAxios()
-
+const location=useLocation()
+const navigate= useNavigate()
+const from=location.state?.from ||"/"
     const {register,
  formState: { errors },
         handleSubmit }=useForm();
@@ -28,19 +30,15 @@ const Register = () => {
             last_log:new Date().toISOString()
           }
           const userRes=await Axios.post("/users",userInfo)
-            
-       
-       
-        
          console.log(userRes.data);
          
           const userProfile={
-            displayName:data.name, 
+            displayName:data?.name, 
             photoURL:profile
           }
           updateUserProfile(userProfile).then(() => {
           console.log('photo  upload');
-          
+          navigate(from)
           }).catch((err) => {
             console.log(err);
             
@@ -75,7 +73,7 @@ const res= await axios.post(imgUploadURl,fromData)
      
           <label className="label"> Your Name</label>
        
-          <input type="text"  {...register("Name")}
+          <input type="text"  {...register("name")}
            className="input" placeholder="Your Name" />
         {errors.name?.type==="required" &&
         <p className='text-red-500'> Name is require</p>

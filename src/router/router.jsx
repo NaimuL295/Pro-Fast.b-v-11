@@ -1,6 +1,6 @@
 import {
   createBrowserRouter,
-  RouterProvider,
+
 } from "react-router";
 import RootLayout from "../layout/RootLayout";
 import Home from "../Page/Home/Home";
@@ -15,6 +15,12 @@ import Payment from "../Page/Dashboard/Payment/Payment";
 import PaymentHistory from "../Page/Dashboard/PaymentHistory/PaymentHistory";
 import TrackParcel from "../Page/Dashboard/TrackParcel/TrackParcel";
 import BeRider from "../Page/Authenticate/BeRider/BeRider";
+import PendingRiders from "../Page/Dashboard/PendingRiders/PendingRiders";
+import ActiveRiders from "../Page/Dashboard/ActiveRiders/ActiveRiders";
+import AdminManager from "../Page/Dashboard/AdminManager/AdminManager";
+import Forbidden from "../Page/Forbidden/Forbidden";
+import AdminRoute from "./AdminRoute";
+import AssignRider from "../Page/Dashboard/AssignRider/AssignRider";
 
 
 
@@ -25,10 +31,14 @@ export const router = createBrowserRouter([
     path: "/",
     Component: RootLayout,
    children: [
+
 {index:true,Component:Home},
+
+
 {path:"coverage",
   loader:()=>fetch("../../public/serviceCenter.json"),
   Component:Coverage},
+
  {path:"beRider",
   loader:()=>fetch("../../public/serviceCenter.json"),
   element:<BeRider></BeRider>
@@ -37,11 +47,13 @@ export const router = createBrowserRouter([
     Component:SendParcel,
     loader:()=>fetch("../../public/serviceCenter.json"),
   },
+  {path:"forbidden",Component:Forbidden}
 ]},
 {path:"/",
   Component:AuthLayout,
   children:[
     {path: "login", Component:Login},
+
     {path: "register", Component:Register
 
     }
@@ -59,12 +71,25 @@ export const router = createBrowserRouter([
         Component: Payment
       },
       {path:"paymentHistory",
-        
         Component:PaymentHistory},
-        {path:"track",Component:TrackParcel}
+        
+        {path:"track",Component:TrackParcel},
+       {path:"adminManager",
+        element: <AdminRoute>  <AdminManager></AdminManager></AdminRoute>  },
+      
+        {path:"assignRider" 
+          , element:<AdminRoute> <AssignRider></AssignRider> </AdminRoute>
+        },
+     
+          {path:"pendingRiders",
+          element:<AdminRoute> <PendingRiders></PendingRiders></AdminRoute>},
+
+        {path:"activeRiders",
+          element:<AdminRoute> <ActiveRiders></ActiveRiders></AdminRoute>},
+          
+       
    ]
    },
-
 
 
 

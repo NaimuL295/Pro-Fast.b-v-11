@@ -1,9 +1,14 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router';
 import ProFast from '../Share/ProFast/ProFast';
-import { FaBoxOpen, FaHistory, FaMapMarkedAlt, FaUserEdit, FaTachometerAlt } from 'react-icons/fa';
+
+import { FaBoxOpen ,  FaUserShield   , FaHistory, FaMapMarkedAlt, FaUserEdit, FaMotorcycle, FaUserClock } from 'react-icons/fa';
+import useUserRole from '../Hook/useUserRole';
 
 const DashboardLayout = () => {
+  const {role}=useUserRole()
+  console.log(role);
+  
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -62,6 +67,49 @@ const DashboardLayout = () => {
     <FaUserEdit className="inline-block mr-2" /> Update Profile
   </NavLink>
 </li>
+
+
+{role === 'admin' && (
+ <>
+<li>
+  <NavLink to="/dashboard/activeRiders">
+    <FaMotorcycle className="inline-block mr-2" /> Active Riders
+  </NavLink>
+</li>
+
+<li>
+  <NavLink to="/dashboard/pendingRiders">
+    <FaUserClock className="inline-block mr-2" /> Pending Riders
+  </NavLink>
+</li>
+
+<li>
+  <NavLink
+    to="/dashboard/adminManager"
+    className={({ isActive }) =>
+      isActive
+        ? 'text-blue-600 font-semibold'
+        : 'text-gray-700 hover:text-blue-500'
+    }
+  >
+    <FaUserShield className="inline-block mr-2" />
+    Manage Users
+  </NavLink>
+</li>
+<li><NavLink
+  to="/dashboard/assignRider"
+  className={({ isActive }) =>
+    `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-200 transition ${
+      isActive ? 'bg-blue-600 text-white' : 'text-gray-800'
+    }`
+  }
+>
+  <FaMotorcycle />
+  Assign Rider
+</NavLink></li>
+</>
+     )}  
+
 
                 </ul>
             </div>
