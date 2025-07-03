@@ -7,13 +7,14 @@ import { useNavigate, useParams } from 'react-router';
 import Swal from 'sweetalert2';
 import useAuth from '../../../Hook/useAuth';
 import useAxiosInstance from '../../../Hook/useAxiosInstance/useAxiosInstance';
+import useTrackingLogger from '../../../Hook/useTrackingLogger';
 
 const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const { parcelId } = useParams();
-    console.log(parcelId);
-    
+   ;
+      const { logTracking }=useTrackingLogger()
     const { user } = useAuth();
     const axiosSecure = useAxiosInstance();
     const navigate = useNavigate();
@@ -28,14 +29,14 @@ const PaymentForm = () => {
             return res.data;
         }
     })
-console.log(parcelInfo);
+// console.log(parcelInfo);
 
 
     if (isPending) {
         return '...loading'
     }
 
-    console.log(parcelInfo)
+    // console.log(parcelInfo)
     const amount = parcelInfo.cost;
     const amountInCents = amount * 100;
     console.log(amountInCents);
@@ -112,6 +113,14 @@ console.log(parcelInfo);
                         });
 
                         // ✅ Redirect to /myParcels
+                       await logTracking(
+                            {
+                                tracking_id: parcelInfo.tracking_id,
+                                status: "payment_done",
+                                details: `Paid by ${user.displayName}`,
+                                updated_by: user.email,
+                            }
+                        )
                         navigate('/dashboard/myParcel');
 
                     }
@@ -146,3 +155,7 @@ console.log(parcelInfo);
 };
 
 export default PaymentForm;
+
+
+
+

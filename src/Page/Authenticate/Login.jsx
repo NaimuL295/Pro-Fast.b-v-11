@@ -1,23 +1,23 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation } from 'react-router';
+import { Link, } from 'react-router';
 import SocialLogin from './SocialLogin';
-import { useNavigate } from 'react-router';
+//import { useNavigate } from 'react-router';
 import useAuth from '../../Hook/useAuth';
 
 const Login = () => {
-    const {signUse}=useAuth()
-const location=useLocation()
-const navigate= useNavigate()
-const from=location.state?.from ||"/"
+    const {signUser}=useAuth()
+//const location=useLocation()
+//const navigate= useNavigate()
+//onst from=location.state?.from ||"/"
     const {register,
 formState: { errors },
     handleSubmit}=useForm()
 
     const onSubmit=data=>{
-       signUse(data?.email, data?.password).then((result) => {
+     signUser(data?.email, data?.password).then((result) => {
         console.log(result);
-        navigate(from)
+       // navigate(from)
        }).catch((err) => {
         console.log(err);
         
@@ -58,7 +58,7 @@ formState: { errors },
        
         
         </fieldset>
-               <button type='submit' className="btn btn-primary mt-4">Login</button> 
+               <button type='submit' className="btn btn-primary text-black mt-4">Login</button> 
         </form> 
           <p> <small>New to this website  </small>
          <Link to="/register" className="">register</Link></p>

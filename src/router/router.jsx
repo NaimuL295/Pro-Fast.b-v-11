@@ -18,13 +18,17 @@ import BeRider from "../Page/Authenticate/BeRider/BeRider";
 import PendingRiders from "../Page/Dashboard/PendingRiders/PendingRiders";
 import ActiveRiders from "../Page/Dashboard/ActiveRiders/ActiveRiders";
 import AdminManager from "../Page/Dashboard/AdminManager/AdminManager";
+import AssignRider from "../Page/Dashboard/AssignRider/AssignRider";
+import PendingDeliveries from "../Page/Dashboard/PendingDeliveries/PendingDeliveries";
+import RiderRoutes from "./routes/RiderRoutes";
+import CompleteDelivery from "../Page/Dashboard/CompleteDelivery/CompleteDelivery";
+import MyEarning from "../Page/Dashboard/MyEarning/MyEarning";
+import DashboardHome from "../Page/Dashboard/DashboardHome/DashboardHome";
+import UpdateProfile from "../Page/UpdateProfile/UpdateProfile";
 import Forbidden from "../Page/Forbidden/Forbidden";
 import AdminRoute from "./AdminRoute";
-import AssignRider from "../Page/Dashboard/AssignRider/AssignRider";
-
-
-
-
+import PrivateRoutes from "./routes/PrivateRoutes";
+import FoundError from "../Component/FoundError/FoundError";
 
 export const router = createBrowserRouter([
   {
@@ -32,40 +36,54 @@ export const router = createBrowserRouter([
     Component: RootLayout,
    children: [
 
-{index:true,Component:Home},
+{index:true,
+  Component:Home},
 
 
 {path:"coverage",
   loader:()=>fetch("../../public/serviceCenter.json"),
+  hydrateFallbackElement:<FoundError></FoundError>,
   Component:Coverage},
 
  {path:"beRider",
   loader:()=>fetch("../../public/serviceCenter.json"),
-  element:<BeRider></BeRider>
+  element: <PrivateRoutes><BeRider></BeRider></PrivateRoutes>,
+  hydrateFallbackElement:<FoundError></FoundError>
+  
  },
   {path:"sendParcel",
-    Component:SendParcel,
+  element:<PrivateRoutes> <SendParcel></SendParcel>
+    </PrivateRoutes>,
     loader:()=>fetch("../../public/serviceCenter.json"),
+    hydrateFallbackElement:<FoundError></FoundError>,
   },
   {path:"forbidden",Component:Forbidden}
 ]},
 {path:"/",
   Component:AuthLayout,
   children:[
-    {path: "login", Component:Login},
+    {path:"login", Component:Login},
 
-    {path: "register", Component:Register
+    {path:"register", Component:Register
 
     }
   ],
 },
 
 
-  {path:"dashboard", element:<DashboardLayout></DashboardLayout>
+  {path:"dashboard", 
+    element:<PrivateRoutes> <DashboardLayout></DashboardLayout></PrivateRoutes>
    ,
    children:[
-    {path:"myParcel",Component:MyParcel},
+    {index:true,
+      Component:DashboardHome},
+      
+    {path:"myParcel",
+      Component:MyParcel},
 
+{path:"updateProfile",
+  Component:UpdateProfile
+},
        {
         path: 'payment/:parcelId',
         Component: Payment
@@ -73,10 +91,22 @@ export const router = createBrowserRouter([
       {path:"paymentHistory",
         Component:PaymentHistory},
         
-        {path:"track",Component:TrackParcel},
+        {path:"track",
+          Component:TrackParcel},
+
        {path:"adminManager",
         element: <AdminRoute>  <AdminManager></AdminManager></AdminRoute>  },
       
+// dashboard
+// rider
+  {path:"PendingDeliveries",
+    element:  <PendingDeliveries></PendingDeliveries>},
+  {path:"completeDelivery",
+    element:<RiderRoutes>   <CompleteDelivery></CompleteDelivery></RiderRoutes>},
+  {path:"myEarning",
+    element:<RiderRoutes> <MyEarning></MyEarning>  </RiderRoutes>},
+
+
         {path:"assignRider" 
           , element:<AdminRoute> <AssignRider></AssignRider> </AdminRoute>
         },
@@ -85,9 +115,7 @@ export const router = createBrowserRouter([
           element:<AdminRoute> <PendingRiders></PendingRiders></AdminRoute>},
 
         {path:"activeRiders",
-          element:<AdminRoute> <ActiveRiders></ActiveRiders></AdminRoute>},
-          
-       
+          element:<AdminRoute> <ActiveRiders></ActiveRiders></AdminRoute>}, 
    ]
    },
 

@@ -11,7 +11,8 @@ const navigate= useNavigate()
   const from=location.state?.from ||"/"
 
     const handlerGoogle=()=>{
-signWithGoogle().then(async(result) => {
+signWithGoogle()
+.then(async(result) => {
 const user=result.user
     const  userInfo={
             email: user.email,

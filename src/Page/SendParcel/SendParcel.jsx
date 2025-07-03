@@ -3,15 +3,16 @@
 
 import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import useAuth from "../../Hook/useAuth";
  import axios from "axios";
-//import useAxiosInstance from "../../Hook/useAxiosInstance/useAxiosInstance";
+import useTrackingLogger from "../../Hook/useTrackingLogger";
 
 
 
 const generateTrackingID = () => {
     const date = new Date();
+
     const datePart = date.toISOString().split("T")[0].replace(/-/g, "");
     const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
     return `PCL-${datePart}-${rand}`;
@@ -21,6 +22,7 @@ const SendParcel = () => {
 
    // const  axiosSecure=useAxiosInstance()
 
+const navigate=useNavigate();
 
 
     const {
@@ -30,7 +32,7 @@ const SendParcel = () => {
         formState: { errors },
     } = useForm();
     const { user } =useAuth();
-  
+  const { logTracking }=useTrackingLogger()
 
     const serviceCenters = useLoaderData();
     // Extract unique regions
@@ -101,6 +103,7 @@ const SendParcel = () => {
             },
         }).then((result) => {
             if (result.isConfirmed) {
+               const tracking_id=generateTrackingID()
                 const parcelData = {
                     ...data,
                     cost:totalCost,
@@ -108,15 +111,16 @@ const SendParcel = () => {
                     payment_status: 'unpaid',
                     delivery_status: 'not_collected',
                     creation_date: new Date().toISOString(),
-                    tracking_id: generateTrackingID(),
+                    tracking_id:tracking_id ,
                 };
 
                console.log("Ready for payment:",parcelData);
                 axios.post ("http://localhost:5000/parcels",parcelData)
-                    .then(res => {
+                    .then(async(res) => {
                         console.log(res.data);
                         if (res.data.insertedId) {
-                            // TODO: redirect to a payment page 
+                            // TODO: redirect to a payment page
+                               
                             Swal.fire({
                                 title: "Redirecting...",
                                 text: "Proceeding to payment gateway.",
@@ -124,6 +128,14 @@ const SendParcel = () => {
                                 timer: 1500,
                                 showConfirmButton: false,
                             });
+                      
+                    await logTracking({
+                                tracking_id: parcelData.tracking_id,
+                                status: "parcel_created",
+                                details: `Created by ${user.displayName}`,
+                                updated_by: user.email,
+                            })
+                            navigate("/dashboard/myParcel")
                         }
                     })
                 

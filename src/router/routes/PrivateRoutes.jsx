@@ -14,8 +14,7 @@ if (loading) {
 if (!user) {
     <Navigate to="/login" state={{From:location.pathname}}></Navigate>
 }
-    return (
-        {children}
+    return ( children
     );
 };
 

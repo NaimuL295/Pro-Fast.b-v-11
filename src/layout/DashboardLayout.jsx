@@ -2,11 +2,11 @@ import React from 'react';
 import { NavLink, Outlet } from 'react-router';
 import ProFast from '../Share/ProFast/ProFast';
 
-import { FaBoxOpen ,  FaUserShield   , FaHistory, FaMapMarkedAlt, FaUserEdit, FaMotorcycle, FaUserClock } from 'react-icons/fa';
+import { FaBoxOpen , FaMotorcycle, FaUserShield   , FaHistory, FaMapMarkedAlt, FaUserEdit, FaUserClock, FaCheckCircle, FaMoneyBillWave } from 'react-icons/fa';
 import useUserRole from '../Hook/useUserRole';
 
 const DashboardLayout = () => {
-  const {role}=useUserRole()
+  const {role,roleLoading}=useUserRole()
   console.log(role);
   
     return (
@@ -67,9 +67,36 @@ const DashboardLayout = () => {
     <FaUserEdit className="inline-block mr-2" /> Update Profile
   </NavLink>
 </li>
+{/* rider */}
 
 
-{role === 'admin' && (
+
+
+
+{!roleLoading && role === "rider" && (
+  <>
+    <li>
+      <NavLink to="/dashboard/PendingDeliveries">
+        <FaMotorcycle className="inline-block mr-2" /> Pending Deliveries
+      </NavLink>
+    </li>
+
+ <li><NavLink
+        to="/dashboard/completeDelivery"
+       >   <FaCheckCircle className=" inline-block mr-2 " />  Complete Delivery
+      </NavLink></li>
+      <li>
+  <NavLink
+    to="/dashboard/myEarning"
+  >
+    <FaMoneyBillWave className="inline-block mr-2" />
+    My Earnings
+  </NavLink>
+</li>
+  </>
+)}
+
+{   !roleLoading && role === 'admin' && (
  <>
 <li>
   <NavLink to="/dashboard/activeRiders">

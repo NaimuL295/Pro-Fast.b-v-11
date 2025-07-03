@@ -52,7 +52,7 @@ logout().then((result) => {
   </div>
   <div className="navbar-end ">
 
-    {user?   <li onClick={handlerLogout}   className='list-none  btn btn-primary' >log out</li> 
+    {user?   <li onClick={handlerLogout}   className='list-none  btn btn-primary text-black' >log out</li> 
     
   :<ul className='space-x-2'><li className='list-none btn  '><Link to="/login">Log in</Link></li>
   <li className='list-none btn btn-primary'><Link to="/register">Sign up</Link></li>
