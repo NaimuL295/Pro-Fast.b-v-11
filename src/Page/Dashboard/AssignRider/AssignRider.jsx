@@ -9,7 +9,7 @@ import useAuth from "../../../Hook/useAuth";
 import Swal from "sweetalert2";
 import useTrackingLogger from '../../../Hook/useTrackingLogger';
 const AssignRider = () => {
-    const axiosSecure = useAxiosInstance();
+    const axiosInstance = useAxiosInstance();
     const [selectedParcel, setSelectedParcel] = useState(null);
    const [selectedRider, setSelectedRider] = useState(null);
     const [riders, setRiders] = useState([]);
@@ -21,7 +21,7 @@ const AssignRider = () => {
     const { data: parcels = [], isLoading } = useQuery({
         queryKey: ["assignableParcels"],
         queryFn: async () => {
-            const res = await axiosSecure.get(
+            const res = await axiosInstance.get(
                 "/parcels?payment_status=paid&delivery_status=not_collected"
             );
             // Sort oldest first
@@ -34,7 +34,7 @@ const AssignRider = () => {
     const { mutateAsync: assignRider } = useMutation({
         mutationFn: async ({ parcelId, rider }) => {
             setSelectedRider(rider);
-            const res = await axiosSecure.patch(`/parcels/${parcelId}/assign`, {
+            const res = await axiosInstance.patch(`/parcels/${parcelId}/assign`, {
                 riderId: rider._id,
                 riderEmail: rider.email,
                 riderName: rider.name,
@@ -66,7 +66,7 @@ const AssignRider = () => {
         setRiders([]);
 
         try {
-            const res = await axiosSecure.get("/riders/available", {
+            const res = await axiosInstance.get("/riders/available", {
                 params: {
                     district: parcel.sender_center, // match with rider.district
                 },

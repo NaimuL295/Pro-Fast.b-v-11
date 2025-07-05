@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { AuthContext } from '../AuthContext/AuthContext';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '../../Firebase/Firebase.in';
-import axios from 'axios';
+//import axios from 'axios';
+import useAxios from '../../Hook/useAxios';
 
 
 
 const googleProvider=new  GoogleAuthProvider()
 const AuthProvider = ({children}) => {
-  
+  const Axios=useAxios()
     const [user, setUser]=useState(null);
     const [loading ,setLoading]=useState(true)
     const createUser=(email,password)=>{
@@ -41,7 +42,7 @@ useEffect(()=>{
 setUser(currentUser)
 
 if (user?.email) {
-    axios.post("http://localhost:5000/jwt",
+    Axios.post("/jwt",
         {
 email:currentUser?.email,
 

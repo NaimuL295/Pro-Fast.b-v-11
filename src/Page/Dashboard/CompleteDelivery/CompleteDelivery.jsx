@@ -5,7 +5,7 @@ import useAuth from '../../../Hook/useAuth';
 import Swal from 'sweetalert2';
 
 const CompleteDelivery = () => {
-    const axiosSecure = useAxiosInstance();
+    const axiosInstance = useAxiosInstance();
     const queryClient = useQueryClient();
     const { user } = useAuth();
     const email = user?.email;
@@ -14,7 +14,7 @@ const CompleteDelivery = () => {
         queryKey: ["completedDeliveries", email],
         enabled: !!email,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/rider/completed-parcels?email=${email}`);
+            const res = await axiosInstance.get(`/rider/completed-parcels?email=${email}`);
             return res.data;
         },
     });
@@ -31,7 +31,7 @@ const CompleteDelivery = () => {
     // Mutation for cashout
     const { mutateAsync: cashout } = useMutation({
         mutationFn: async (parcelId) => {
-            const res = await axiosSecure.patch(`/parcels/${parcelId}/cashout`);
+            const res = await axiosInstance.patch(`/parcels/${parcelId}/cashout`);
             return res.data;
         },
         onSuccess: () => {

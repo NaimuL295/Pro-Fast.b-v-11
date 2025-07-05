@@ -5,8 +5,9 @@ import { useForm } from "react-hook-form";
 import Swal from 'sweetalert2';
 import { useLoaderData, useNavigate } from "react-router";
 import useAuth from "../../Hook/useAuth";
- import axios from "axios";
+
 import useTrackingLogger from "../../Hook/useTrackingLogger";
+import useAxios from "../../Hook/useAxios";
 
 
 
@@ -33,7 +34,7 @@ const navigate=useNavigate();
     } = useForm();
     const { user } =useAuth();
   const { logTracking }=useTrackingLogger()
-
+const Axios=useAxios()
     const serviceCenters = useLoaderData();
     // Extract unique regions
     const uniqueRegions = [...new Set(serviceCenters.map((w) => w.region))];
@@ -115,7 +116,7 @@ const navigate=useNavigate();
                 };
 
                console.log("Ready for payment:",parcelData);
-                axios.post ("http://localhost:5000/parcels",parcelData)
+            Axios.post ("/parcels",parcelData)
                     .then(async(res) => {
                         console.log(res.data);
                         if (res.data.insertedId) {

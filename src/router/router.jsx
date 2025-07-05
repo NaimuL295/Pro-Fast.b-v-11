@@ -29,6 +29,8 @@ import Forbidden from "../Page/Forbidden/Forbidden";
 import AdminRoute from "./AdminRoute";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import FoundError from "../Component/FoundError/FoundError";
+import About from "../Page/About/About";
+import Loading from "../Component/Loading";
 
 export const router = createBrowserRouter([
   {
@@ -42,22 +44,25 @@ export const router = createBrowserRouter([
 
 {path:"coverage",
   loader:()=>fetch("../../public/serviceCenter.json"),
-  hydrateFallbackElement:<FoundError></FoundError>,
-  Component:Coverage},
+  Component:Coverage,
+  hydrateFallbackElement:<Loading></Loading>,
+},
 
  {path:"beRider",
   loader:()=>fetch("../../public/serviceCenter.json"),
   element: <PrivateRoutes><BeRider></BeRider></PrivateRoutes>,
-  hydrateFallbackElement:<FoundError></FoundError>
+  hydrateFallbackElement:<Loading></Loading>
   
  },
   {path:"sendParcel",
   element:<PrivateRoutes> <SendParcel></SendParcel>
     </PrivateRoutes>,
     loader:()=>fetch("../../public/serviceCenter.json"),
-    hydrateFallbackElement:<FoundError></FoundError>,
+    hydrateFallbackElement:<Loading></Loading>,
   },
-  {path:"forbidden",Component:Forbidden}
+  {path:"forbidden",Component:Forbidden},
+  {path:"about",Component:About},
+   {path:"*/", Component:<FoundError></FoundError>}
 ]},
 {path:"/",
   Component:AuthLayout,
@@ -65,8 +70,8 @@ export const router = createBrowserRouter([
     {path:"login", Component:Login},
 
     {path:"register", Component:Register
-
-    }
+    },
+     {path:"*/", Component:<FoundError></FoundError>}
   ],
 },
 
@@ -116,6 +121,7 @@ export const router = createBrowserRouter([
 
         {path:"activeRiders",
           element:<AdminRoute> <ActiveRiders></ActiveRiders></AdminRoute>}, 
+          {path:"*/", Component:<FoundError></FoundError>}
    ]
    },
 

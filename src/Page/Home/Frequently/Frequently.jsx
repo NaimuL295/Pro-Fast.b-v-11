@@ -2,7 +2,7 @@ import React from 'react';
 
 const Frequently = () => {
     return (
-        <div className='w-11/12 mx-auto'>
+        <div className='w-11/12 mx-auto my-8'>
 
 <div className='text-center  my-6 '>
   <h1 className='text-4xl font-bold'>Frequently Asked Question (FAQ)</h1>

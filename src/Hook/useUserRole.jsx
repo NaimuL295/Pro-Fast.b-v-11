@@ -6,7 +6,7 @@ import useAxiosInstance from './useAxiosInstance/useAxiosInstance';
 
 const useUserRole = () => {
     const { user, loading: authLoading } = useAuth();
-     const axiosSecure = useAxiosInstance();;
+     const axiosInstance = useAxiosInstance();;
     const {
         data: role = 'user',
         isLoading: roleLoading,
@@ -15,7 +15,7 @@ const useUserRole = () => {
         queryKey: ['userRole', user?.email],
         enabled: !authLoading && !!user?.email,
         queryFn: async () => {
-             const res = await axiosSecure.get(`/users/${user.email}/role`);
+             const res = await axiosInstance.get(`/users/${user.email}/role`);
             return res.data.role;
         },
     });
